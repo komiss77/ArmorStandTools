@@ -84,7 +84,7 @@ hasBasePlate: false
 hasGravity: false
 name: ''
 invulnerable: false
-equipmentLock: false
+#equipmentLock: false
 enableTool:
   headX: true
   headY: true

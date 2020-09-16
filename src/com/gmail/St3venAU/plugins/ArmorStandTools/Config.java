@@ -31,7 +31,7 @@ class Config {
     static boolean hasGravity                = false;
     static String  defaultName               = "";
     static boolean invulnerable              = false;
-    static boolean equipmentLock             = false;
+    //static boolean equipmentLock             = false;
     static boolean allowMoveWorld            = false;
     static boolean deactivateOnWorldChange   = true;
     static boolean debug                     = false;
@@ -147,7 +147,7 @@ class Config {
         hasGravity                  = config.getBoolean("hasGravity");
         defaultName                 = config.getString("name");
         invulnerable                = config.getBoolean("invulnerable");
-        equipmentLock               = config.getBoolean("equipmentLock");
+        //equipmentLock               = config.getBoolean("equipmentLock");
         allowMoveWorld              = config.getBoolean("allowMovingStandsBetweenWorlds");
         deactivateOnWorldChange     = config.getBoolean("deactivateToolsOnWorldChange");
         requireCreative             = config.getBoolean("requireCreativeForSaveAsCmdBlock");
@@ -178,8 +178,8 @@ class Config {
                 plugin.getLogger().log(Level.INFO, "PlotSquared plugin was found. PlotSquared support enabled.");
             }
             catch (Throwable e) {
-                e.printStackTrace();
-                plugin.getLogger().log(Level.WARNING, "PlotSquared plugin was found, but there was an error initializing PlotSquared support.");
+                //e.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, "PlotSquared plugin was found, but there was an error initializing PlotSquared support : "+e.getMessage());
             }
         } else {
             plugin.getLogger().log(Level.INFO, "PlotSquared plugin not found. Continuing without PlotSquared support.");

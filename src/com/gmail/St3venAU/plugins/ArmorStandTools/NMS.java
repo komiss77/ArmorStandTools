@@ -13,32 +13,32 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.logging.Level;
 
-abstract class NMS {
+ class NMS {
 
     private final String
-            nmsVersion,
-            disabledSlotsFieldName;
+            nmsVersion;
+            //disabledSlotsFieldName;
 
-    NMS(String nmsVersion, String disabledSlotsFieldName) {
-        this.nmsVersion = nmsVersion;
-        this.disabledSlotsFieldName = disabledSlotsFieldName;
+    NMS() {
+        this.nmsVersion = Main.plugin.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];;
+       // this.disabledSlotsFieldName = disabledSlotsFieldName;
     }
 
     private Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
         return Class.forName("net.minecraft.server." + nmsVersion + "." + nmsClassString);
     }
 
-    private Object getNmsEntity(org.bukkit.entity.Entity entity) {
+   /* private Object getNmsEntity(org.bukkit.entity.Entity entity) {
         try {
             return entity.getClass().getMethod("getHandle").invoke(entity);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
 
     void openSign(final Player p, final Block b) {
         new BukkitRunnable() {
@@ -51,12 +51,12 @@ abstract class NMS {
                     Object player = p.getClass().getMethod("getHandle").invoke(p);
                     player.getClass().getMethod("openSign", getNMSClass("TileEntitySign")).invoke(player, sign);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Main.plugin.getLogger().log(Level.WARNING, "can not open Sign : "+e.getMessage());
                 }
             }
         }.runTaskLater(Main.plugin, 2L);
     }
-
+/*
     boolean toggleSlotsDisabled(ArmorStand as) {
         boolean slotsDisabled = getDisabledSlots(as) == 0;
         setSlotsDisabled(as, slotsDisabled);
@@ -102,7 +102,7 @@ abstract class NMS {
 
     boolean equipmentLocked(ArmorStand as) {
         return getDisabledSlots(as) == 0xFFFFFF;
-    }
+    }*/
 
     private String getItemStackTags(ItemStack is) {
         if(is == null) {
@@ -160,7 +160,7 @@ abstract class NMS {
                 + (as.isSmall()                    ? "Small:1,"             : ""                                                              )
                 + (as.isInvulnerable()             ? "Invulnerable:1,"      : ""                                                              )
                 + (as.isGlowing()                  ? "Glowing:1,"           : ""                                                              )
-                + (getDisabledSlots(as) == 0       ? ""                     : ("DisabledSlots:" + getDisabledSlots(as) + ",")                 )
+                //+ (getDisabledSlots(as) == 0       ? ""                     : ("DisabledSlots:" + getDisabledSlots(as) + ",")                 )
                 + (as.isCustomNameVisible()        ? "CustomNameVisible:1," : ""                                                              )
                 + (as.getCustomName() == null      ? ""                     : ("CustomName:\"\\\"" + as.getCustomName() + "\\\"\",")          )
                 + (as.getLocation().getYaw() == 0F ? ""                     : ("Rotation:[" + Utils.twoDec(as.getLocation().getYaw()) + "f],"))
@@ -210,7 +210,7 @@ abstract class NMS {
         clone.setSmall(as.isSmall());
         clone.setInvulnerable(as.isInvulnerable());
         clone.setGlowing(as.isGlowing());
-        setSlotsDisabled(clone, getDisabledSlots(as) == 0xFFFFFF);
+        //setSlotsDisabled(clone, getDisabledSlots(as) == 0xFFFFFF);
         ArmorStandCmd asCmd = new ArmorStandCmd(as);
         if(asCmd.getCommand() != null) {
             asCmd.cloneTo(clone);

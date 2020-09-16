@@ -24,7 +24,7 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-    private static final String LATEST_VERSION = "v1_16_R2";
+    //private static final String LATEST_VERSION = "v1_16_R2";
 
     private static Object WG_AST_FLAG;
 
@@ -56,10 +56,11 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        if(!loadSpigotVersionSupport()) {
-            setEnabled(false);
-            return;
-        }
+        nms = new NMS();
+       // if(!loadSpigotVersionSupport()) {
+       //     setEnabled(false);
+       //     return;
+      //  }
         getServer().getPluginManager().registerEvents(new  MainListener(this), this);
         Commands cmds = new Commands(this);
         getCommand("astools").setExecutor(cmds);
@@ -84,7 +85,7 @@ public class Main extends JavaPlugin {
         savedInventories.clear();
     }
 
-    private boolean loadSpigotVersionSupport() {
+  /*  private boolean loadSpigotVersionSupport() {
         String nmsVersion = getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         String usingVersion;
         if(nmsVersion.startsWith("v1_4")  || nmsVersion.startsWith("v1_5")  || 
@@ -113,7 +114,7 @@ public class Main extends JavaPlugin {
             return false;
         }
         return true;
-    }
+    }*/
 
     void returnArmorStand(ArmorStand as) {
         if(as.hasMetadata("startLoc")) {

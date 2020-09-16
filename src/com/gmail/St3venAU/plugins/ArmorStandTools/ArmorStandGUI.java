@@ -69,10 +69,10 @@ class ArmorStandGUI implements Listener {
         }
         i.setItem(10, as.getEquipment().getItemInMainHand());
         i.setItem(12, as.getEquipment().getItemInOffHand());
-        i.setItem(2,  as.getHelmet());
-        i.setItem(11, as.getChestplate());
-        i.setItem(20, as.getLeggings());
-        i.setItem(29, as.getBoots());
+        i.setItem(2,  as.getEquipment().getHelmet());
+        i.setItem(11, as.getEquipment().getChestplate());
+        i.setItem(20, as.getEquipment().getLeggings());
+        i.setItem(29, as.getEquipment().getBoots());
         inUse.add(as.getEntityId());
         p.openInventory(i);
     }
@@ -96,8 +96,8 @@ class ArmorStandGUI implements Listener {
                 return Utils.setLore(item, ChatColor.AQUA + Config.arms + ": " + (as.hasArms() ? (ChatColor.GREEN + Config.isOn) : (ChatColor.RED + Config.isOff)));
             case INVUL:
                 return Utils.setLore(item, ChatColor.AQUA + Config.invul + ": " + (as.isInvulnerable() ? (ChatColor.GREEN + Config.isOn) : (ChatColor.RED + Config.isOff)));
-            case SLOTS:
-                return Utils.setLore(item, ChatColor.AQUA + Config.equip + ": " + (Main.nms.equipmentLocked(as) ? (ChatColor.GREEN + Config.locked) : (ChatColor.RED + Config.unLocked)));
+            //case SLOTS:
+            //    return Utils.setLore(item, ChatColor.AQUA + Config.equip + ": " + (Main.nms.equipmentLocked(as) ? (ChatColor.GREEN + Config.locked) : (ChatColor.RED + Config.unLocked)));
             case NAME:
                 return Utils.setLore(item, ChatColor.AQUA + Config.currently + ": " + (as.getCustomName() == null ? (ChatColor.BLUE + Config.none) : (ChatColor.GREEN + as.getCustomName())));
             case PHEAD:
@@ -111,9 +111,9 @@ class ArmorStandGUI implements Listener {
     }
 
     private String plrHeadName(ArmorStand as) {
-        if(as.getHelmet() == null) return null;
-        if(!(as.getHelmet().getItemMeta() instanceof SkullMeta)) return null;
-        SkullMeta meta = (SkullMeta) as.getHelmet().getItemMeta();
+        if(as.getEquipment().getHelmet() == null) return null;
+        if(!(as.getEquipment().getHelmet().getItemMeta() instanceof SkullMeta)) return null;
+        SkullMeta meta = (SkullMeta) as.getEquipment().getHelmet().getItemMeta();
         if(!meta.hasOwner()) return null;
         return meta.getOwningPlayer().getName();
     }
@@ -197,9 +197,9 @@ class ArmorStandGUI implements Listener {
             case INVUL:
                 Utils.actionBarMsg(p, Config.invul + ": " + (Utils.toggleInvulnerability(as) ? Config.isOn : Config.isOff));
                 break;
-            case SLOTS:
-                Utils.actionBarMsg(p, Config.equip + ": " + (Main.nms.toggleSlotsDisabled(as) ? Config.locked : Config.unLocked));
-                break;
+            //case SLOTS:
+            //    Utils.actionBarMsg(p, Config.equip + ": " + (Main.nms.toggleSlotsDisabled(as) ? Config.locked : Config.unLocked));
+            //    break;
             case MOVE:
                 p.closeInventory();
                 UUID uuid = p.getUniqueId();
@@ -252,10 +252,10 @@ class ArmorStandGUI implements Listener {
                 if(as == null || i == null) return;
                 as.getEquipment().setItemInMainHand(i.getItem(10));
                 as.getEquipment().setItemInOffHand(i.getItem(12));
-                as.setHelmet(i.getItem(2));
-                as.setChestplate(i.getItem(11));
-                as.setLeggings(i.getItem(20));
-                as.setBoots(i.getItem(29));
+                as.getEquipment().setHelmet(i.getItem(2));
+                as.getEquipment().setChestplate(i.getItem(11));
+                as.getEquipment().setLeggings(i.getItem(20));
+                as.getEquipment().setBoots(i.getItem(29));
             }
         }.runTaskLater(plugin, 1L);
     }

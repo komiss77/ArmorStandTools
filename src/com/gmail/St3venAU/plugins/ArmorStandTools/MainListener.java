@@ -418,7 +418,7 @@ public class MainListener implements Listener {
             as.setCustomName(Config.defaultName);
             as.setCustomNameVisible(true);
         }
-        Main.nms.setSlotsDisabled(as, Config.equipmentLock);
+        //Main.nms.setSlotsDisabled(as, Config.equipmentLock);
         return as;
     }
 
