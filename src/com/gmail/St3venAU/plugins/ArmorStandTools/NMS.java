@@ -1,5 +1,6 @@
 package com.gmail.St3venAU.plugins.ArmorStandTools;
 
+import java.lang.reflect.Field;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,30 +16,42 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 import java.util.logging.Level;
+//import net.minecraft.server.v1_16_R3.EntityArmorStand;
 
- class NMS {
+class NMS {
 
-    private final String
-            nmsVersion;
-            //disabledSlotsFieldName;
+    protected String
+            nmsVersion,
+            disabledSlotsFieldName = "";
 
     NMS() {
-        this.nmsVersion = Main.plugin.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];;
-       // this.disabledSlotsFieldName = disabledSlotsFieldName;
+        this.nmsVersion = Main.plugin.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        switch (nmsVersion) {
+            case "v1_13_R1": disabledSlotsFieldName = "bH";
+            case "v1_13_R2": disabledSlotsFieldName = "bB";
+            case "v1_14_R1": disabledSlotsFieldName = "bE";
+            case "v1_15_R1": disabledSlotsFieldName = "bB";
+            case "v1_16_R1": disabledSlotsFieldName = "bA";
+            case "v1_16_R2": disabledSlotsFieldName = "bv";
+            case "v1_16_R3": disabledSlotsFieldName = "disabledSlots";
+        }
+        if (disabledSlotsFieldName.isEmpty() && nmsVersion.startsWith("v1_16_R")) {
+            disabledSlotsFieldName = "disabledSlots";
+        }
     }
 
     private Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
         return Class.forName("net.minecraft.server." + nmsVersion + "." + nmsClassString);
     }
 
-   /* private Object getNmsEntity(org.bukkit.entity.Entity entity) {
+    private Object getNmsEntity(org.bukkit.entity.Entity entity) {
         try {
             return entity.getClass().getMethod("getHandle").invoke(entity);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-    }*/
+    }
 
     void openSign(final Player p, final Block b) {
         new BukkitRunnable() {
@@ -56,14 +69,20 @@ import java.util.logging.Level;
             }
         }.runTaskLater(Main.plugin, 2L);
     }
-/*
+
+    
+    
+    
+    
+    
+    
     boolean toggleSlotsDisabled(ArmorStand as) {
         boolean slotsDisabled = getDisabledSlots(as) == 0;
         setSlotsDisabled(as, slotsDisabled);
         return slotsDisabled;
     }
 
-    private int getDisabledSlots(ArmorStand as) {
+    private int getDisabledSlots (ArmorStand as) {
         Object nmsEntity = getNmsEntity(as);
         if(nmsEntity == null) return 0;
         Field f;
@@ -102,8 +121,14 @@ import java.util.logging.Level;
 
     boolean equipmentLocked(ArmorStand as) {
         return getDisabledSlots(as) == 0xFFFFFF;
-    }*/
+    }
 
+    
+    
+    
+    
+    
+    
     private String getItemStackTags(ItemStack is) {
         if(is == null) {
             return "";
@@ -160,7 +185,7 @@ import java.util.logging.Level;
                 + (as.isSmall()                    ? "Small:1,"             : ""                                                              )
                 + (as.isInvulnerable()             ? "Invulnerable:1,"      : ""                                                              )
                 + (as.isGlowing()                  ? "Glowing:1,"           : ""                                                              )
-                //+ (getDisabledSlots(as) == 0       ? ""                     : ("DisabledSlots:" + getDisabledSlots(as) + ",")                 )
+                + (getDisabledSlots(as) == 0       ? ""                     : ("DisabledSlots:" + getDisabledSlots(as) + ",")                 )
                 + (as.isCustomNameVisible()        ? "CustomNameVisible:1," : ""                                                              )
                 + (as.getCustomName() == null      ? ""                     : ("CustomName:\"\\\"" + as.getCustomName() + "\\\"\",")          )
                 + (as.getLocation().getYaw() == 0F ? ""                     : ("Rotation:[" + Utils.twoDec(as.getLocation().getYaw()) + "f],"))
@@ -210,7 +235,7 @@ import java.util.logging.Level;
         clone.setSmall(as.isSmall());
         clone.setInvulnerable(as.isInvulnerable());
         clone.setGlowing(as.isGlowing());
-        //setSlotsDisabled(clone, getDisabledSlots(as) == 0xFFFFFF);
+        setSlotsDisabled(clone, getDisabledSlots(as) == 0xFFFFFF);
         ArmorStandCmd asCmd = new ArmorStandCmd(as);
         if(asCmd.getCommand() != null) {
             asCmd.cloneTo(clone);

@@ -96,8 +96,12 @@ class ArmorStandGUI implements Listener {
                 return Utils.setLore(item, ChatColor.AQUA + Config.arms + ": " + (as.hasArms() ? (ChatColor.GREEN + Config.isOn) : (ChatColor.RED + Config.isOff)));
             case INVUL:
                 return Utils.setLore(item, ChatColor.AQUA + Config.invul + ": " + (as.isInvulnerable() ? (ChatColor.GREEN + Config.isOn) : (ChatColor.RED + Config.isOff)));
-            //case SLOTS:
-            //    return Utils.setLore(item, ChatColor.AQUA + Config.equip + ": " + (Main.nms.equipmentLocked(as) ? (ChatColor.GREEN + Config.locked) : (ChatColor.RED + Config.unLocked)));
+            case SLOTS:
+                if (Main.nms.disabledSlotsFieldName.isEmpty()) {
+                    return Utils.setLore(item, "§8Slot lock unactive -", "§8unsupported NMS version!");
+                } else {
+                    return Utils.setLore(item, ChatColor.AQUA + Config.equip + ": " + (Main.nms.equipmentLocked(as) ? (ChatColor.GREEN + Config.locked) : (ChatColor.RED + Config.unLocked)));
+                }
             case NAME:
                 return Utils.setLore(item, ChatColor.AQUA + Config.currently + ": " + (as.getCustomName() == null ? (ChatColor.BLUE + Config.none) : (ChatColor.GREEN + as.getCustomName())));
             case PHEAD:
@@ -197,9 +201,13 @@ class ArmorStandGUI implements Listener {
             case INVUL:
                 Utils.actionBarMsg(p, Config.invul + ": " + (Utils.toggleInvulnerability(as) ? Config.isOn : Config.isOff));
                 break;
-            //case SLOTS:
-            //    Utils.actionBarMsg(p, Config.equip + ": " + (Main.nms.toggleSlotsDisabled(as) ? Config.locked : Config.unLocked));
-            //    break;
+            case SLOTS:
+                if (Main.nms.disabledSlotsFieldName.isEmpty()) {
+                    Utils.actionBarMsg(p, "§8Slot lock unactive - unsupported NMS version!");
+                } else {
+                    Utils.actionBarMsg(p, Config.equip + ": " + (Main.nms.toggleSlotsDisabled(as) ? Config.locked : Config.unLocked));
+                }
+                break;
             case MOVE:
                 p.closeInventory();
                 UUID uuid = p.getUniqueId();

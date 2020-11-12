@@ -41,7 +41,7 @@ public enum ArmorStandTool {
     GRAV    ("gui_grav",    Material.GHAST_TEAR,            (short) 0, 32, true,  true, "astools.use"),
     ARMS    ("gui_arms",    Material.ARROW,                 (short) 0, 23, true,  true, "astools.use"),
     NAME    ("gui_name",    Material.NAME_TAG,              (short) 0, 5,  true,  true, "astools.use"),
-    //SLOTS   ("gui_slots",   Material.IRON_HOE,              (short) 0, 34, true,  true, "astools.use"),
+    SLOTS   ("gui_slots",   Material.IRON_HOE,              (short) 0, 34, true,  true, "astools.use"),
     PHEAD   ("gui_pHead",   Material.PLAYER_HEAD,           (short) 3, 6,  true,  true, "astools.head"),
     INVUL   ("gui_invul",   Material.GLISTERING_MELON_SLICE,(short) 0, 33, true,  true, "astools.use"),
     MOVE    ("gui_move",    Material.FEATHER,               (short) 0, 14, true,  true, "astools.use"),
